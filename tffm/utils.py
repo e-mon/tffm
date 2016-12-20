@@ -135,10 +135,9 @@ def sigmoid(x):
 # Be carefull about dimentionality -- maybe tf.transpose(outputs) is needed
 
 def loss_logistic(outputs, y):
-    margins = -y * tf.transpose(outputs)
+    margins = tf.clip_by_value(-y * tf.transpose(outputs), -100,88)
     raw_loss = tf.log(tf.add(1.0, tf.exp(margins)))
     return tf.minimum(raw_loss, 100, name='truncated_log_loss')
-
 
 def loss_mse(outputs, y):
     return tf.pow(y -  tf.transpose(outputs), 2, name='mse_loss')

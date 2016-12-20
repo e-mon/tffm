@@ -10,8 +10,7 @@ from tqdm import tqdm
 from .core import TFFMCore
 from .base import TFFMBaseModel
 from .utils import loss_logistic, loss_mse
-
-
+from .utils import sigmoid
 
 class TFFMClassifier(TFFMBaseModel):
     """Factorization Machine (aka FM).
@@ -82,9 +81,9 @@ class TFFMClassifier(TFFMBaseModel):
             Returns the probability of the sample for each class in the model.
         """
         outputs = self.decision_function(X)
-        probs_positive = utils.sigmoid(outputs)
+        probs_positive = sigmoid(outputs)
         probs_negative = 1 - probs_positive
-        probs = np.concatenate((probs_negative, probs_positive), axis=1)
+        probs = np.concatenate((probs_negative[:,None], probs_positive[:,None]), axis=1)
         return probs
 
 
